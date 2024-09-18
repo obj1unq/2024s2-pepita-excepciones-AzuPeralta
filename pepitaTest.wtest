@@ -1,0 +1,36 @@
+import pepita.*
+describe "Milena" {
+  test "Milena moviliza a sus aves 4km" {
+    assert.equals(30, pepon.energia())
+    assert.equals(100, pepita.energia())
+    milena.movilizar(4)
+    assert.equals(86, pepita.energia())
+    assert.equals(2, pepon.energia())
+
+  }
+
+  test "Pepita puede pero pepon no, volar 6km" {
+    //Energia inicial.
+    assert.equals(30, pepon.energia())
+    assert.equals(100, pepita.energia())
+    assert.that(pepita.puedeVolar(6))
+    assert.notThat(pepon.puedeVolar(6))
+    //No todos pueden volar
+    assert.throwsException({milena.movilizar(6)})
+    //Ambos mantienen la energia inicial
+    assert.equals(30, pepon.energia())
+    assert.equals(100, pepita.energia())
+    }
+
+  test "Ninguno de los dos puede volar 100km" {
+    assert.equals(30, pepon.energia())
+    assert.equals(100, pepita.energia())
+    
+    //milena.movilizar(100) Si lo dejo asi, captura el error de validarVuelos y muestra ese mensaje. 
+    assert.throwsException({milena.movilizar(100)})
+
+    assert.equals(30, pepon.energia())
+    assert.equals(100, pepita.energia())
+
+  }
+}

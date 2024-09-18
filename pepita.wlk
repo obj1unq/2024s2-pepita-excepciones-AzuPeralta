@@ -6,11 +6,23 @@ object pepita {
 	}
 	
 	method volar(distancia) {
-		energia = energia - 10 - distancia
+		if (self.puedeVolar(distancia)) {
+			energia -= self.gastoDeEnergiaPorVuelo(distancia)
+		}else{
+			self.error("Tengo "+ energia + " de energia, no me alcanza para volar!")
+		}
 	}
 		
 	method energia() {
 		return energia
+	}
+
+	method puedeVolar(distancia) {
+	  return energia >= self.gastoDeEnergiaPorVuelo(distancia)
+	}
+
+	method gastoDeEnergiaPorVuelo(distancia) {
+	  return 10 + distancia
 	}
 }
 
@@ -54,9 +66,21 @@ object pepon {
 	}
 		
 	method volar(distancia) {
-		energia = energia - 20 - 2*distancia
+
+		if (self.puedeVolar(distancia)) {
+			energia -= self.gastoDeEnergiaPorVuelo(distancia)
+		}else{
+			self.error("Tengo "+ energia + " de energia, no me alcanza para volar!")
+		}
 	}
 	
+	method puedeVolar(distancia) {
+	  return energia >= self.gastoDeEnergiaPorVuelo(distancia)
+	}
+
+	method gastoDeEnergiaPorVuelo(distancia) {
+	  return 20 + (2*distancia)
+	}
 }
 
 object roque {
@@ -74,3 +98,28 @@ object roque {
 	}
 }
 
+object milena {
+
+	const aves = #{pepita, pepon}
+
+	method todasPuedenVolar(distancia) {
+  		return aves.all({ave => ave.puedeVolar(distancia)})
+	}
+
+	method validarVuelos(distancia) {
+  		if (not self.todasPuedenVolar(distancia)){
+		self.error("No todas las aves pueden volar!")
+  		}
+	}
+  
+  	method movilizar(distancia) {
+		self.validarVuelos(distancia) 	//Si TODAS pueden volar
+		aves.forEach({ave => ave.volar(distancia)}) // vuelan
+	
+	
+	//Alternativa sin if ni subtarea:
+	//self.todasPuedenVolar(distancia).whenTrue({
+    //aves.forEach({ ave => ave.volar(distancia) })
+ 	// })
+  }
+}
